@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { UserRole, TourScale } from '@/types';
 
@@ -21,7 +21,6 @@ const SCALES: { value: TourScale; label: string }[] = [
 
 export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = createClient();
 
   const [step, setStep] = useState<1 | 2>(1);
