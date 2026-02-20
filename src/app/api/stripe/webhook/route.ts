@@ -4,12 +4,8 @@ import { createAdminClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 
 // This route handles Stripe webhooks to update subscription status
-// Must be raw body — disable Next.js body parsing
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// Must be raw body — Next.js App Router reads body via req.text()
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -30,7 +26,7 @@ export async function POST(req: NextRequest) {
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
-        const session = event.data.object as Stripe.CheckoutSession;
+        const session = event.data.object as Stripe.Checkout.Session;
         const userId = session.metadata?.user_id;
         const plan = session.metadata?.plan as 'pro_monthly' | 'pro_annual';
 
